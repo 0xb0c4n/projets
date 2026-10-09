@@ -30,8 +30,8 @@ def calcul_inconnu(echantillon):
     tab = []
     N = len(s_ech)
     print(N)
-    for i in range(N):
-        tab.append(s_ech[i]/N)
+    for i, _  in enumerate(s_ech, start=1):
+        tab.append(i/N)
     return tab
 
 tab = calc_exponentielle(10000, 2)
