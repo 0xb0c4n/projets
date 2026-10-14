@@ -56,7 +56,6 @@ def afficher(img, img_corrigee, nom):
     plt.tight_layout()
     plt.show()
 
-
 for nom in ["chien_gris.jpg", "paysage_gris.jpg"]:
     img = plt.imread(nom)
 
