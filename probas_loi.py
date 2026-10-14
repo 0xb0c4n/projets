@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
     plt.subplot(1, 3, 3)
     plt.hist(ech_inconnu, bins=50, density=True)
-    plt.title("Après F empirique (loi inconnue)")
+    plt.title("Après F (loi inconnue)")
 
     plt.tight_layout()
     plt.show()
