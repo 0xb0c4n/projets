@@ -2,40 +2,67 @@ import math
 import random
 import matplotlib.pyplot as plt
 
-#Pour le remettre sous la forme d'une loi uniforme, il faut y appliquer la fonction quantile de la loi exponentielle
 
-def f(x, l):
+def F_exp(x, l):
     return 1 - math.exp(-l * x)
 
-def calc_param(x, l):
-    return -math.log(1-x)/l
 
-def calc_exponentielle(N, l):
-    tab = [0]*N
-    for i in range(N):
-        x = random.random()
-        tab[i] = calc_param(x, l)
-    return tab
+def exp_reciproque(u, l):
+    return -math.log(1 - u) / l
 
-def calc_uniforme(N, l):
-    tab = []
-    ex = calc_exponentielle(N, l)
+
+def exponentielle(N, l):
+    echantillon = []
     for i in range(N):
-        x = random.random()
-        tab.append(f(ex[i], l))
-    return tab
+        u = random.random()
+        echantillon.append(exp_reciproque(u, l))
+    return echantillon
+
+
+def uniforme(echantillon, l):
+    resultat = []
+    for x in echantillon:
+        resultat.append(F_exp(x, l))
+    return resultat
+
 
 def calcul_inconnu(echantillon):
-    s_ech = sorted(echantillon)
-    tab = []
-    N = len(s_ech)
-    print(N)
-    for i, _  in enumerate(s_ech, start=1):
-        tab.append(i/N)
-    return tab
+    N = len(echantillon)
+    valeurs_triees = sorted(echantillon)
 
-tab = calc_exponentielle(10000, 2)
-tab2 = calc_uniforme(100000, 2)
-tab3 = calcul_inconnu(calc_exponentielle(10000, 2))
-plt.hist(tab3)
-plt.show()
+    proportion = {}
+    for i in range(N):
+        proportion[valeurs_triees[i]] = (i + 1) / N
+
+    resultat = []
+    for x in echantillon:
+        resultat.append(proportion[x])
+    return resultat
+
+
+if __name__ == "__main__":
+    N = 10000
+    l = 2
+
+    ech_expo = exponentielle(N, l)
+
+    ech_uniforme = uniforme(ech_expo, l)
+
+    ech_inconnu = calcul_inconnu(ech_expo)
+
+    plt.figure(figsize=(12, 4))
+
+    plt.subplot(1, 3, 1)
+    plt.hist(ech_expo, bins=50, density=True)
+    plt.title("Loi exponentielle E(" + str(l) + ")")
+
+    plt.subplot(1, 3, 2)
+    plt.hist(ech_uniforme, bins=50, density=True)
+    plt.title("Après F_X (loi connue)")
+
+    plt.subplot(1, 3, 3)
+    plt.hist(ech_inconnu, bins=50, density=True)
+    plt.title("Après F empirique (loi inconnue)")
+
+    plt.tight_layout()
+    plt.show()
