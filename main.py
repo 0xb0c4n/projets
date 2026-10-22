@@ -9,11 +9,19 @@ def uk_vk(A, k):
     uk = U[:, :k]
     vk = Vt[:k, :]
     sk = S[:k]
-    sk_vect = np.nonzero(sk)
     
-    return uk, vk, sk_vect
+    return uk, vk, sk
     
+def approx_err_epsilon(A, epsilon):
+    U, S, Vt = np.linalg.svd(A)
+    r = len(S)
     
+    frobenius = np.sum(sigma)
+    
+    k = r
+    while(frobenius <= epsilon):
+        k -= 1
+        frobenius = np.sum(sigma)
     
 
 
@@ -26,5 +34,14 @@ def main():
     w = img.shape[0]
     h = img.shape[1]
     size = img.nbytes
+    print(shape)
+    print(f"{w}*{h}")
+    print(size)
+    
+    A = img.astype(np.float32)
+    
+if __name__ == "__main__":
+    main()
+    
     
     
